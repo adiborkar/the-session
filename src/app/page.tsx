@@ -10,31 +10,29 @@ export default function HomePage() {
         {/* Big editorial headline — serif italic + bold sans mix */}
         <div className="mb-10">
           <h1 className="leading-[0.95] text-[#2a2520]" style={{ letterSpacing: "-0.025em" }}>
-            <span
-              className="block font-[family-name:var(--font-display)] italic font-light"
-              style={{ fontSize: "clamp(56px, 9vw, 110px)" }}
-            >
-              Music
-            </span>
-            <span
-              className="flex items-center gap-6"
-              style={{ fontSize: "clamp(56px, 9vw, 110px)" }}
-            >
-              <span className="font-bold tracking-tight" style={{ fontFamily: "var(--font-sans)" }}>
-                for the
-              </span>
-              <span className="text-[#DD573D] text-[0.4em] leading-none">✦</span>
-              <span
-                className="font-[family-name:var(--font-display)] italic font-light"
-              >
-                love
-              </span>
-            </span>
+            {/* Line 1: bold sans */}
             <span
               className="block font-bold tracking-tight"
               style={{ fontFamily: "var(--font-sans)", fontSize: "clamp(56px, 9vw, 110px)" }}
             >
-              of it.
+              Music
+            </span>
+            {/* Line 2: serif italic */}
+            <span
+              className="block font-[family-name:var(--font-display)] italic font-light"
+              style={{ fontSize: "clamp(56px, 9vw, 110px)" }}
+            >
+              for the love
+            </span>
+            {/* Line 3: bold sans + trailing star */}
+            <span
+              className="flex items-center gap-4"
+              style={{ fontSize: "clamp(56px, 9vw, 110px)" }}
+            >
+              <span className="font-bold tracking-tight" style={{ fontFamily: "var(--font-sans)" }}>
+                of it.
+              </span>
+              <span className="text-[#DD573D] text-[0.35em] leading-none">✦</span>
             </span>
           </h1>
         </div>
