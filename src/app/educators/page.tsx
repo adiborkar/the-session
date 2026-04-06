@@ -11,22 +11,24 @@ interface PageProps {
 
 export default async function EducatorsPage({ searchParams }: PageProps) {
   const { instrument, style } = await searchParams
-  const supabase = await createClient()
 
-  let query = supabase
-    .from('educator_profiles')
-    .select('*')
-    .eq('approved', true)
-    .order('created_at', { ascending: false })
+  let educators: EducatorProfile[] | null = null
+  try {
+    const supabase = await createClient()
+    let query = supabase
+      .from('educator_profiles')
+      .select('*')
+      .eq('approved', true)
+      .order('created_at', { ascending: false })
 
-  if (instrument) {
-    query = query.contains('instruments', [instrument])
+    if (instrument) query = query.contains('instruments', [instrument])
+    if (style) query = query.contains('styles', [style])
+
+    const { data } = await query
+    educators = data
+  } catch {
+    // Supabase not configured yet
   }
-  if (style) {
-    query = query.contains('styles', [style])
-  }
-
-  const { data: educators } = await query
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">

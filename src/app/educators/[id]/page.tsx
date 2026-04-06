@@ -16,23 +16,36 @@ interface PageProps {
 
 export default async function EducatorProfilePage({ params }: PageProps) {
   const { id } = await params
-  const supabase = await createClient()
 
-  const { data: educator } = await supabase
-    .from('educator_profiles')
-    .select('*')
-    .eq('slug', id)
-    .eq('approved', true)
-    .single()
+  let educator: EducatorProfile | null = null
+  let reviews: Review[] | null = null
+
+  try {
+    const supabase = await createClient()
+
+    const { data: educatorData } = await supabase
+      .from('educator_profiles')
+      .select('*')
+      .eq('slug', id)
+      .eq('approved', true)
+      .single()
+
+    educator = educatorData
+
+    if (educator) {
+      const { data: reviewData } = await supabase
+        .from('reviews')
+        .select('*')
+        .eq('educator_id', educator.id)
+        .order('created_at', { ascending: false })
+        .limit(10)
+      reviews = reviewData
+    }
+  } catch {
+    // Supabase not configured
+  }
 
   if (!educator) notFound()
-
-  const { data: reviews } = await supabase
-    .from('reviews')
-    .select('*')
-    .eq('educator_id', educator.id)
-    .order('created_at', { ascending: false })
-    .limit(10)
 
   const avgRating =
     reviews && reviews.length > 0
@@ -62,7 +75,7 @@ export default async function EducatorProfilePage({ params }: PageProps) {
             <div>
               <h1 className="text-2xl font-bold">{educator.name}</h1>
               <div className="flex flex-wrap gap-1 mt-2">
-                {(educator as EducatorProfile).instruments.map((inst: string) => (
+                {educator.instruments.map((inst: string) => (
                   <Badge key={inst} variant="secondary">{inst}</Badge>
                 ))}
               </div>
@@ -99,7 +112,7 @@ export default async function EducatorProfilePage({ params }: PageProps) {
             <div>
               <h2 className="font-semibold mb-3">Styles</h2>
               <div className="flex flex-wrap gap-2">
-                {(educator as EducatorProfile).styles.map((style: string) => (
+                {educator.styles.map((style: string) => (
                   <Badge key={style} variant="outline">{style}</Badge>
                 ))}
               </div>
@@ -111,7 +124,7 @@ export default async function EducatorProfilePage({ params }: PageProps) {
             <div>
               <h2 className="font-semibold mb-3">Teaches</h2>
               <div className="flex flex-wrap gap-2">
-                {(educator as EducatorProfile).age_groups.map((ag: string) => (
+                {educator.age_groups.map((ag: string) => (
                   <Badge key={ag} variant="outline">{ag}</Badge>
                 ))}
               </div>

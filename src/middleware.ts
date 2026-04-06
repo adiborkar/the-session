@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 const PROTECTED_STUDENT = ['/student']
-const PROTECTED_EDUCATOR = ['/educator']
+const PROTECTED_EDUCATOR = ['/educator/']
 const PROTECTED_ADMIN = ['/admin']
 
 export async function middleware(request: NextRequest) {
@@ -29,20 +29,27 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
-
   const path = request.nextUrl.pathname
 
   const isProtected =
-    PROTECTED_STUDENT.some(p => path.startsWith(p)) ||
-    PROTECTED_EDUCATOR.some(p => path.startsWith(p)) ||
-    PROTECTED_ADMIN.some(p => path.startsWith(p))
+    PROTECTED_STUDENT.some(p => path === p || path.startsWith(p + '/')) ||
+    (path === '/educator' || PROTECTED_EDUCATOR.some(p => path.startsWith(p))) ||
+    PROTECTED_ADMIN.some(p => path === p || path.startsWith(p + '/'))
 
-  if (isProtected && !user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    url.searchParams.set('redirectTo', path)
-    return NextResponse.redirect(url)
+  if (isProtected) {
+    let user = null
+    try {
+      const { data } = await supabase.auth.getUser()
+      user = data.user
+    } catch {
+      // Supabase not configured yet
+    }
+    if (!user) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/login'
+      url.searchParams.set('redirectTo', path)
+      return NextResponse.redirect(url)
+    }
   }
 
   return supabaseResponse
