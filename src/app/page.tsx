@@ -10,27 +10,20 @@ export default function HomePage() {
         {/* Big editorial headline — serif italic + bold sans mix */}
         <div className="mb-10">
           <h1 className="leading-[0.95] text-[#2a2520]" style={{ letterSpacing: "-0.025em" }}>
-            {/* Line 1: bold sans */}
-            <span
-              className="block font-bold tracking-tight"
-              style={{ fontFamily: "var(--font-sans)", fontSize: "clamp(56px, 9vw, 110px)" }}
-            >
-              Music
-            </span>
-            {/* Line 2: serif italic */}
+            {/* Line 1: serif italic */}
             <span
               className="block font-[family-name:var(--font-display)] italic font-light"
               style={{ fontSize: "clamp(56px, 9vw, 110px)" }}
             >
-              for the love
+              Your music.
             </span>
-            {/* Line 3: bold sans + trailing star */}
+            {/* Line 2: bold sans + trailing star */}
             <span
               className="flex items-center gap-4"
               style={{ fontSize: "clamp(56px, 9vw, 110px)" }}
             >
               <span className="font-bold tracking-tight" style={{ fontFamily: "var(--font-sans)" }}>
-                of it.
+                Your rules.
               </span>
               <span className="text-[#DD573D] text-[0.35em] leading-none">✦</span>
             </span>
