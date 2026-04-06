@@ -1,8 +1,5 @@
 import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { formatSGD } from '@/lib/utils'
 import type { EducatorProfile } from '@/types'
 
@@ -19,58 +16,66 @@ export function EducatorCard({ educator }: EducatorCardProps) {
     .slice(0, 2)
 
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow">
-      <CardContent className="p-6">
-        <div className="flex items-start gap-4 mb-4">
-          <Avatar className="h-14 w-14 shrink-0">
+    <div className="border border-[#e0d9cd] bg-[#F7F1E2] hover:border-[#2a2520] transition-colors group">
+      <div className="p-7">
+        {/* Header */}
+        <div className="flex items-start gap-4 mb-5">
+          <Avatar className="h-12 w-12 shrink-0">
             <AvatarImage src={educator.photo_url ?? undefined} alt={educator.name} />
-            <AvatarFallback className="bg-amber-100 text-amber-700 font-semibold">
+            <AvatarFallback className="bg-[#ede7d8] text-[#2a2520] font-semibold text-sm">
               {initials}
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <h3 className="font-semibold text-base">{educator.name}</h3>
-            <div className="flex flex-wrap gap-1 mt-1">
-              {educator.instruments.slice(0, 3).map((inst) => (
-                <Badge key={inst} variant="secondary" className="text-xs">
-                  {inst}
-                </Badge>
-              ))}
-            </div>
+            <h3 className="font-semibold text-[#2a2520] text-[15px]">{educator.name}</h3>
+            <p className="text-[12px] text-[#8a7f75] mt-0.5">
+              {educator.instruments.slice(0, 3).join(' · ')}
+            </p>
           </div>
         </div>
 
+        {/* Love statement */}
         {educator.love_statement && (
-          <blockquote className="text-sm text-zinc-500 italic mb-4 leading-relaxed line-clamp-2">
+          <blockquote
+            className="font-[family-name:var(--font-display)] italic font-light text-[#2a2520] text-[15px] leading-snug mb-4 line-clamp-2"
+            style={{ letterSpacing: "-0.01em" }}
+          >
             &ldquo;{educator.love_statement}&rdquo;
           </blockquote>
         )}
 
-        <p className="text-sm text-zinc-600 mb-4 line-clamp-2 leading-relaxed">
+        {/* Bio */}
+        <p className="text-[13px] text-[#5a5047] mb-5 line-clamp-2 leading-relaxed">
           {educator.bio}
         </p>
 
-        <div className="flex flex-wrap gap-1 mb-4">
+        {/* Styles */}
+        <div className="flex flex-wrap gap-1.5 mb-6">
           {educator.styles.slice(0, 3).map((style) => (
-            <Badge key={style} variant="outline" className="text-xs text-zinc-500">
+            <span
+              key={style}
+              className="text-[11px] tracking-[0.08em] uppercase text-[#5a5047] border border-[#e0d9cd] px-2 py-0.5"
+            >
               {style}
-            </Badge>
+            </span>
           ))}
         </div>
 
-        <div className="flex items-center justify-between">
+        {/* Footer */}
+        <div className="flex items-end justify-between border-t border-[#e0d9cd] pt-5">
           <div>
-            <p className="text-xs text-zinc-400">From</p>
-            <p className="font-semibold text-sm">{formatSGD(educator.trial_rate)} trial</p>
-            <p className="text-xs text-zinc-400">{formatSGD(educator.hourly_rate)}/hr after</p>
+            <p className="text-[11px] uppercase tracking-wide text-[#8a7f75] mb-0.5">From</p>
+            <p className="text-[15px] font-semibold text-[#2a2520]">{formatSGD(educator.trial_rate)}</p>
+            <p className="text-[11px] text-[#8a7f75]">{formatSGD(educator.hourly_rate)}/hr regular</p>
           </div>
-          <Link href={`/educators/${educator.slug}`}>
-            <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-white">
-              View & book
-            </Button>
+          <Link
+            href={`/educators/${educator.slug}`}
+            className="text-[11px] tracking-[0.12em] uppercase bg-[#DD573D] text-[#F7F1E2] px-4 py-2.5 hover:bg-[#b8432b] transition-colors"
+          >
+            View & book
           </Link>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }

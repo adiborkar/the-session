@@ -4,10 +4,7 @@ import { useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Music, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
@@ -24,11 +21,7 @@ function LoginForm() {
     setError('')
     setLoading(true)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) {
-      setError(error.message)
-      setLoading(false)
-      return
-    }
+    if (error) { setError(error.message); setLoading(false); return }
     router.push(redirectTo)
     router.refresh()
   }
@@ -36,63 +29,61 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          required
-          value={email}
+        <label className="text-[11px] tracking-[0.15em] uppercase text-[#5a5047]">Email</label>
+        <input
+          type="email" required value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
+          className="border border-[#e0d9cd] bg-[#F7F1E2] px-4 py-2.5 text-[13px] text-[#2a2520] placeholder-[#8a7f75] focus:outline-none focus:border-[#2a2520] transition-colors"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="password">Password</Label>
-        <Input
-          id="password"
-          type="password"
-          required
-          value={password}
+        <label className="text-[11px] tracking-[0.15em] uppercase text-[#5a5047]">Password</label>
+        <input
+          type="password" required value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="••••••••"
+          className="border border-[#e0d9cd] bg-[#F7F1E2] px-4 py-2.5 text-[13px] text-[#2a2520] placeholder-[#8a7f75] focus:outline-none focus:border-[#2a2520] transition-colors"
         />
       </div>
-      {error && <p className="text-sm text-red-500">{error}</p>}
-      <Button
-        type="submit"
-        disabled={loading}
-        className="bg-amber-500 hover:bg-amber-600 text-white mt-2"
+      {error && <p className="text-[13px] text-[#DD573D]">{error}</p>}
+      <button
+        type="submit" disabled={loading}
+        className="mt-2 bg-[#DD573D] text-[#F7F1E2] text-[11px] tracking-[0.15em] uppercase py-3 hover:bg-[#b8432b] transition-colors disabled:opacity-60 flex items-center justify-center"
       >
         {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Sign in'}
-      </Button>
+      </button>
     </form>
   )
 }
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-zinc-50">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-[#F7F1E2]">
       <div className="w-full max-w-sm">
-        <div className="flex justify-center mb-8">
-          <Link href="/" className="flex items-center gap-2 font-semibold text-lg">
-            <Music className="h-5 w-5 text-amber-500" />
-            The Session
+        <div className="flex justify-center mb-10">
+          <Link href="/" className="flex items-center gap-3">
+            <span className="text-[#DD573D] text-lg">✦</span>
+            <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-[#2a2520]">
+              The Session
+            </span>
           </Link>
         </div>
 
-        <div className="bg-white border border-zinc-200 rounded-2xl p-8 shadow-sm">
-          <h1 className="text-xl font-bold mb-1">Welcome back</h1>
-          <p className="text-sm text-zinc-500 mb-6">Sign in to your account</p>
+        <div className="border border-[#e0d9cd] bg-[#F7F1E2] p-8">
+          <h1 className="text-[20px] font-[family-name:var(--font-display)] font-light text-[#2a2520] mb-1"
+            style={{ letterSpacing: "-0.01em" }}>
+            Welcome back
+          </h1>
+          <p className="text-[13px] text-[#8a7f75] mb-7">Sign in to your account</p>
 
           <Suspense>
             <LoginForm />
           </Suspense>
 
-          <p className="text-sm text-zinc-500 text-center mt-4">
+          <p className="text-[13px] text-[#8a7f75] text-center mt-5">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-amber-600 hover:underline">
-              Sign up
-            </Link>
+            <Link href="/signup" className="text-[#DD573D] hover:underline">Sign up</Link>
           </p>
         </div>
       </div>

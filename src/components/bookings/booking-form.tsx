@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { formatSGD } from '@/lib/utils'
 import { format, addDays, startOfDay } from 'date-fns'
@@ -143,7 +142,7 @@ export function BookingForm({ educatorId, trialRate, hourlyRate, stripeOnboarded
 
   if (!stripeOnboarded) {
     return (
-      <p className="text-sm text-zinc-400 text-center py-4">
+      <p className="text-[13px] text-[#8a7f75] text-center py-4">
         This educator is not yet accepting bookings.
       </p>
     )
@@ -154,19 +153,19 @@ export function BookingForm({ educatorId, trialRate, hourlyRate, stripeOnboarded
   return (
     <div className="flex flex-col gap-4">
       {/* Trial / Regular toggle */}
-      <div className="flex rounded-lg border border-zinc-200 overflow-hidden">
+      <div className="flex border border-[#e0d9cd]">
         <button
           onClick={() => setIsTrial(true)}
-          className={`flex-1 py-2 text-sm font-medium transition-colors ${
-            isTrial ? 'bg-amber-500 text-white' : 'text-zinc-500 hover:bg-zinc-50'
+          className={`flex-1 py-2.5 text-[11px] tracking-[0.1em] uppercase transition-colors ${
+            isTrial ? 'bg-[#DD573D] text-[#F7F1E2]' : 'text-[#5a5047] hover:text-[#2a2520]'
           }`}
         >
           Trial · {formatSGD(trialRate)}
         </button>
         <button
           onClick={() => setIsTrial(false)}
-          className={`flex-1 py-2 text-sm font-medium transition-colors ${
-            !isTrial ? 'bg-amber-500 text-white' : 'text-zinc-500 hover:bg-zinc-50'
+          className={`flex-1 py-2.5 text-[11px] tracking-[0.1em] uppercase transition-colors border-l border-[#e0d9cd] ${
+            !isTrial ? 'bg-[#DD573D] text-[#F7F1E2]' : 'text-[#5a5047] hover:text-[#2a2520]'
           }`}
         >
           Regular · {formatSGD(hourlyRate)}/hr
@@ -175,25 +174,25 @@ export function BookingForm({ educatorId, trialRate, hourlyRate, stripeOnboarded
 
       {/* Slot picker */}
       <div>
-        <p className="text-sm font-medium mb-2">Pick a time</p>
+        <p className="text-[11px] tracking-[0.12em] uppercase text-[#5a5047] mb-2">Pick a time</p>
         {slotsLoading ? (
           <div className="flex justify-center py-6">
-            <Loader2 className="h-5 w-5 animate-spin text-zinc-400" />
+            <Loader2 className="h-5 w-5 animate-spin text-[#8a7f75]" />
           </div>
         ) : availableSlots.length === 0 ? (
-          <p className="text-sm text-zinc-400 py-4 text-center">
+          <p className="text-[13px] text-[#8a7f75] py-4 text-center">
             No available slots in the next 2 weeks.
           </p>
         ) : (
-          <div className="flex flex-col gap-2 max-h-64 overflow-y-auto pr-1">
+          <div className="flex flex-col gap-1.5 max-h-64 overflow-y-auto pr-1">
             {availableSlots.map((slot) => (
               <button
                 key={slot.datetime.toISOString()}
                 onClick={() => setSelectedSlot(slot.datetime)}
-                className={`w-full text-left px-3 py-2 rounded-lg border text-sm transition-colors ${
+                className={`w-full text-left px-3 py-2.5 border text-[13px] transition-colors ${
                   selectedSlot?.toISOString() === slot.datetime.toISOString()
-                    ? 'border-amber-500 bg-amber-50 text-amber-700'
-                    : 'border-zinc-200 hover:border-zinc-300'
+                    ? 'border-[#DD573D] bg-[#fdf1ee] text-[#DD573D]'
+                    : 'border-[#e0d9cd] text-[#2a2520] hover:border-[#2a2520]'
                 }`}
               >
                 {slot.label}
@@ -203,19 +202,19 @@ export function BookingForm({ educatorId, trialRate, hourlyRate, stripeOnboarded
         )}
       </div>
 
-      <Button
+      <button
         onClick={handleBook}
         disabled={!selectedSlot || loading}
-        className="w-full bg-amber-500 hover:bg-amber-600 text-white"
+        className="w-full bg-[#DD573D] text-[#F7F1E2] text-[11px] tracking-[0.15em] uppercase py-3 hover:bg-[#b8432b] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
       >
         {loading ? (
-          <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Redirecting...</>
+          <><Loader2 className="h-4 w-4 animate-spin" /> Redirecting...</>
         ) : (
           `Book for ${formatSGD(price)}`
         )}
-      </Button>
+      </button>
 
-      <p className="text-xs text-zinc-400 text-center">
+      <p className="text-[11px] text-[#8a7f75] text-center">
         Secure payment via Stripe · 60-min session
       </p>
     </div>
